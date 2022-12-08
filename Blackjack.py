@@ -8,6 +8,9 @@ from bot import bet,play
 
 decks = input("Enter number of decks to use: ")
 playerOr = int(input("Enter 1 for human player or 0 for bot: "))
+runs = int(input("Enter how many runs for the bot: "))
+
+
 
 # user chooses number of decks of cards to use
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*(int(decks)*4)
@@ -15,6 +18,7 @@ deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*(int(decks)*4)
 # initialize scores
 wins = 0
 losses = 0
+ties = 0
 
 #Betting
 PlayerMoney = 100
@@ -24,6 +28,9 @@ CurrentBet = 0
 def deal(deck):
     hand = []
     for i in range(2):
+        if not deck:
+            print("HIT")
+            deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*(int(decks)*4)
         random.shuffle(deck)
         card = deck.pop()
         if card == 11:card = "J"
@@ -34,15 +41,33 @@ def deal(deck):
     return hand
 
 def play_again():
-    again = input("Do you want to play again? (Y/N) : ").lower()
-    if again == "y":
-        dealer_hand = []
-        player_hand = []
-        deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
-        game()
+    global runs
+    print("runs "+ str(runs))
+    runs -= 1
+    if playerOr == 1:
+        again = input("Do you want to play again? (Y/N) : ").lower()
+        if again == "y":
+            dealer_hand = []
+            player_hand = []
+            deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
+            game()
+        else:
+            print("    \033[1;32;40mWINS:  \033[1;37;40m%s   \033[1;31;40mLOSSES:  \033[1;37;40m%s\n" % (wins, losses))
+            print(PlayerMoney)
+            print("Bye!")
+            sys.exit()
     else:
-        print("Bye!")
-        sys.exit()
+        if runs > 0:
+            dealer_hand = []
+            player_hand = []
+            deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
+            game()
+        else:
+            print("    \033[1;32;40mWINS:  \033[1;37;40m%s   \033[1;31;40mLOSSES:  \033[1;37;40m%s\n" % (wins, losses))
+            print(ties)
+            print(PlayerMoney)
+            print("Bye!")
+            sys.exit()
 
 def total(hand):
     total = 0
@@ -56,6 +81,10 @@ def total(hand):
     return total
 
 def hit(hand):
+    global deck
+    if not deck:
+        print("HIT")
+        deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*(int(decks)*4)
     card = deck.pop()
     if card == 11:card = "J"
     if card == 12:card = "Q"
@@ -83,13 +112,15 @@ def print_results(dealer_hand, player_hand):
 def blackjack(dealer_hand, player_hand):
     global wins
     global losses
+    global ties
     global PlayerMoney
     global CurrentBet
 
     if total(player_hand) == 21 and total(dealer_hand) == 21:
         print_results(dealer_hand, player_hand)
         print("It's a draw!\n")
-        print("You keep your money, you have " + PlayerMoney + "\n")
+        print("You keep your money, you have " + str(PlayerMoney) + "\n")
+        ties += 1
         play_again()
     elif total(player_hand) == 21:
         print_results(dealer_hand, player_hand)
@@ -113,11 +144,13 @@ def score(dealer_hand, player_hand):
     global losses
     global PlayerMoney
     global CurrentBet
+    global ties
         
     if total(player_hand) == total(dealer_hand):
         print_results(dealer_hand, player_hand)
         print("It's a draw!\n")
-        print("You keep your money, you have " + PlayerMoney + "\n")
+        print("You keep your money, you have " + str(PlayerMoney) + "\n")
+        ties += 1
     elif total(player_hand) == 21:
         print_results(dealer_hand, player_hand)
         print ("Congratulations! You got a Blackjack!\n")
