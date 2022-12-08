@@ -1,10 +1,13 @@
 import os
 import random
+import sys
+from bot import bet,play
 
 #blackjack foundation provided by: https://gist.github.com/mjhea0/5680216
 #betting added by us,
 
 decks = input("Enter number of decks to use: ")
+playerOr = int(input("Enter 1 for human player or 0 for bot: "))
 
 # user chooses number of decks of cards to use
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*(int(decks)*4)
@@ -39,7 +42,7 @@ def play_again():
         game()
     else:
         print("Bye!")
-        exit()
+        sys.exit()
 
 def total(hand):
     total = 0
@@ -68,18 +71,20 @@ def clear():
         os.system('clear')
 
 def print_results(dealer_hand, player_hand):
-    clear()
+    #clear()
 
-    print("\n    WELCOME TO BLACKJACK!\n")
-    print("-"*30+"\n")
-    print("    \033[1;32;40mWINS:  \033[1;37;40m%s   \033[1;31;40mLOSSES:  \033[1;37;40m%s\n" % (wins, losses))
-    print("-"*30+"\n")
+    # print("\n    WELCOME TO BLACKJACK!\n")
+    # print("-"*30+"\n")
+    # print("    \033[1;32;40mWINS:  \033[1;37;40m%s   \033[1;31;40mLOSSES:  \033[1;37;40m%s\n" % (wins, losses))
+    # print("-"*30+"\n")
     print ("The dealer has a " + str(dealer_hand) + " for a total of " + str(total(dealer_hand)))
     print ("You have a " + str(player_hand) + " for a total of " + str(total(player_hand)))
 
 def blackjack(dealer_hand, player_hand):
     global wins
     global losses
+    global PlayerMoney
+    global CurrentBet
 
     if total(player_hand) == 21 and total(dealer_hand) == 21:
         print_results(dealer_hand, player_hand)
@@ -159,16 +164,19 @@ def game():
     global CurrentBet
 
     choice = 0
-    clear()
+    #clear()
     print("\n    WELCOME TO BLACKJACK!\n")
     print("-"*30+"\n")
     print("    \033[1;32;40mWINS:  \033[1;37;40m%s   \033[1;31;40mLOSSES:  \033[1;37;40m%s\n" % (wins, losses))
     print("-"*30+"\n")
-
-    CurrentBet = int(input("How much do you want to bet? Maximum of 50000\n"))
-    while CurrentBet > MaxBet or CurrentBet <= 0:
-        print("You can't bet that amount")
+    if playerOr == 1:
         CurrentBet = int(input("How much do you want to bet? Maximum of 50000\n"))
+        while CurrentBet > MaxBet or CurrentBet <= 0:
+            print("You can't bet that amount")
+            CurrentBet = int(input("How much do you want to bet? Maximum of 50000\n"))
+    else:
+        CurrentBet = bet()
+        print(CurrentBet)
 
     dealer_hand = deal(deck)
     player_hand = deal(deck)
@@ -177,7 +185,10 @@ def game():
     blackjack(dealer_hand, player_hand)
     quit=False
     while not quit:
-        choice = input("Do you want to [H]it, [S]tand, or [Q]uit: ").lower()
+        if playerOr == 1:
+            choice = input("Do you want to [H]it, [S]tand, or [Q]uit: ").lower()
+        else:
+            choice = play()
         if choice == 'h':
             hit(player_hand)
             print(player_hand)
@@ -194,7 +205,7 @@ def game():
         elif choice == "q":
             print("Bye!")
             quit=True
-            exit()
+            sys.exit()
 
 
 if __name__ == "__main__":
