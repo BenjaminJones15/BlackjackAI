@@ -6,8 +6,11 @@ import random
 def displayText():
     print("Geeks")
 
-def bet():
-    return random.randrange(1,50000)
+def bet(Probability):
+    if Probability > 0.5:
+        return 100
+    else:
+        return 10
 def play():
     picker = random.choice([1,2])
     if picker == 1:

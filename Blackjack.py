@@ -10,7 +10,7 @@ decks = input("Enter number of decks to use: ")
 playerOr = int(input("Enter 1 for human player or 0 for bot: "))
 runs = int(input("Enter how many runs for the bot: "))
 
-
+Probability = 0
 
 # user chooses number of decks of cards to use
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*(int(decks)*4)
@@ -195,6 +195,7 @@ def game():
     global PlayerMoney
     global MaxBet
     global CurrentBet
+    global Probability
 
     choice = 0
     #clear()
@@ -208,7 +209,8 @@ def game():
             print("You can't bet that amount")
             CurrentBet = int(input("How much do you want to bet? Maximum of 50000\n"))
     else:
-        CurrentBet = bet()
+        #Probability = heuristic
+        CurrentBet = bet(Probability)
         print(CurrentBet)
 
     dealer_hand = deal(deck)
