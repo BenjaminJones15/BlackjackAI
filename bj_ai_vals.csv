@@ -1,3 +1,3 @@
-Model,n,acc,n_win,n_loss,n_tie,win.p,loss.p,tie.p,source
-nn.lvl2,43879,,20656,23223,0,0.4707,0.5293,0,https://github.com/justinbodnar/blackjack-ai
-ml.,,,,,,,,,
+Model,n,n_win,n_loss,n_tie,win.p,loss.p,tie.p,code.src
+nn.lvl2,43879,20656,23223,0,0.4707,0.5293,0,https://github.com/justinbodnar/blackjack-ai
+ml.ga,10008,3944,5352,712,0.3941,0.5347,0.0711,https://github.com/anster01/BlackJack_AI
