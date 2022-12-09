@@ -1,0 +1,4 @@
+Model,n,acc,n_win,n_loss,n_tie,win.p,loss.p,tie.p
+nn.lvl1,10000,,5242,,,0.5242,,
+nn.lvl2,10000,,4149,,,0.4149,,
+nn.lvl3,10000,0.73,4133,,,0.4133,,
